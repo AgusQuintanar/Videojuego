@@ -8,6 +8,11 @@ public class AutomaticGunScriptLPFP : MonoBehaviour {
 	//Animator component attached to weapon
 	Animator anim;
 
+	[Header("Raycast Configuration")]
+	[SerializeField] float range = 100f;
+	[SerializeField] float damage = 30f;
+
+
 	[Header("Gun Camera")]
 	//Main gun camera
 	public Camera gunCamera;
@@ -417,6 +422,9 @@ public class AutomaticGunScriptLPFP : MonoBehaviour {
 				Instantiate (Prefabs.casingPrefab, 
 					Spawnpoints.casingSpawnPoint.transform.position, 
 					Spawnpoints.casingSpawnPoint.transform.rotation);
+
+				//Making Raycast to Objectives
+				Shoot();
 			}
 		}
 
@@ -491,6 +499,23 @@ public class AutomaticGunScriptLPFP : MonoBehaviour {
 			anim.SetBool ("Run", false);
 		}
 	}
+
+
+    private void Shoot()
+    {
+		RaycastHit hit;
+		if (Physics.Raycast(gunCamera.transform.position, gunCamera.transform.forward, out hit, range))
+        {
+			Debug.Log("Hit"+hit.transform.name);
+			ZombieHealth target = hit.transform.GetComponent<ZombieHealth>();
+			if (target == null) return; //if thing hitted is not zombie
+			target.TakeDamage(damage);
+        }
+        else
+        {
+			return; //null exception
+        }
+    }
 
 	private IEnumerator GrenadeSpawnDelay () {
 		
