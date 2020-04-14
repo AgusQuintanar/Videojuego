@@ -24,7 +24,7 @@ public class Interaction : MonoBehaviour
             doorInFront = collision.gameObject;
             print("new door");
         }
-        if(collision.gameObject.name == "Stair"){
+        if(collision.gameObject.tag == "Stair"){
             stairInFront = true;
             print("stair");
         }
@@ -35,16 +35,15 @@ public class Interaction : MonoBehaviour
             doorInFront = null;
             print("deleted door");
         }
-        if(collision.gameObject.name == "Stair"){
+        if(collision.gameObject.tag == "Stair"){
             stairInFront = false;
             print("stair exit");
         }
     }
 
     void ProcessDoor(){
-        if(doorInFront == null) return;
+        if(doorInFront == false) return;
         if(Input.GetKeyDown(KeyCode.X)){
-            print("caca");
             if(doorInFront.GetComponent<Properties>().isOpen){
                 print("closing");
                 doorInFront.transform.localRotation = Quaternion.Euler(0, 0, 0);

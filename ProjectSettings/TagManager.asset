@@ -8,6 +8,7 @@ TagManager:
   - Metal
   - ExplosiveBarrel
   - Door
+  - Stair
   layers:
   - Default
   - TransparentFX
