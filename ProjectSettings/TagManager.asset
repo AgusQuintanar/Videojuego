@@ -9,6 +9,7 @@ TagManager:
   - ExplosiveBarrel
   - Door
   - Stair
+  - Item
   layers:
   - Default
   - TransparentFX
