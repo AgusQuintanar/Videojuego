@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+
 
 public class Interaction : MonoBehaviour
 {
     GameObject doorInFront;
     bool stairInFront;
+    public GameObject textBox;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +27,7 @@ public class Interaction : MonoBehaviour
         if(collision.gameObject.tag == "Door"){
             doorInFront = collision.gameObject;
             print("new door");
+            textBox.GetComponent<Text>().text = "[X] para abrir.";
         }
         if(collision.gameObject.tag == "Stair"){
             stairInFront = true;
@@ -34,6 +39,7 @@ public class Interaction : MonoBehaviour
         if(collision.gameObject.tag == "Door"){
             doorInFront = null;
             print("deleted door");
+            textBox.GetComponent<Text>().text = "";
         }
         if(collision.gameObject.tag == "Stair"){
             stairInFront = false;
