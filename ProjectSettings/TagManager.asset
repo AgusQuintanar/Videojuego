@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Target
-  - Metal
-  - ExplosiveBarrel
   - Door
+  - Item
+  - Stair
+  - Interactive
   layers:
   - Default
   - TransparentFX

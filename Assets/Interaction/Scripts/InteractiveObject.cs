@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InteractiveObject : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class InteractiveObject : MonoBehaviour
 
     private bool canBeCollected = false;
 
+    private GameObject itemIn3d;
+
     private void Awake()
     {
         InstantiateItemIn3d();
@@ -22,7 +26,7 @@ public class InteractiveObject : MonoBehaviour
     {
         if (item != null)
         {
-            GameObject itemIn3d = Instantiate(item.ItemIn3D, this.transform);
+            itemIn3d = Instantiate(item.ItemIn3D, this.transform);
             itemIn3d.transform.parent = this.transform;
 
             itemIn3d.AddComponent<Rigidbody>();
@@ -34,36 +38,97 @@ public class InteractiveObject : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         playerInventory = player.getInventory();
+        StartCoroutine(UpdateParent());
     }
 
     private void Update()
     {
-        if (canBeCollected && Input.GetKeyUp(KeyCode.E))
+
+        if (canBeCollected)
         {
-            Debug.Log("Detected object");
+            Debug.Log("Detected object ");
 
-            // todo show gui
+            InventoryManager.INSTANCE.setIOHelpBarItemName("Presione [E] para recoger: " + this.item.ItemName);
+            InventoryManager.INSTANCE.setIOHelpBarItemAmount("Cantidad: " + this.amount);
 
-            for (int i = 0; i < amount; i++) playerInventory.addItem(new ItemStack(item, 1));
+
+        }
+
+        getInput();
+
+    }
+
+    private void updateParentPosition()
+    {
+        if (item != null)
+        {
+            //TODO hacerlo
+        }
+    }
+
+    private void getInput()
+    {
+        InteractiveObject io = null;
+        if (InventoryManager.INSTANCE.getPlayerNearestCollider() != null) io = InventoryManager.INSTANCE.getPlayerNearestCollider().GetComponent<InteractiveObject>();
+        bool isIOHelpBarOpen = InventoryManager.INSTANCE.getIsIOHelpBarOpen();
+
+        if (canBeCollected && Input.GetKeyUp(KeyCode.E) && io == this && isIOHelpBarOpen)
+        {
+            bool canAddItemToInvetory = true;
+            int insertedItems = 0;
+
+            for (int i = 0; i < amount; i++)
+            {
+                canAddItemToInvetory = playerInventory.addItem(new ItemStack(item, 1));
+
+                if (!canAddItemToInvetory)
+                {
+                    InventoryManager.INSTANCE.setIOHelpBarItemName("No se puede agregar objeto");
+                    InventoryManager.INSTANCE.setIOHelpBarItemAmount("El inventario esta lleno!");
+                    this.amount -= insertedItems;
+                    break;
+                }
+
+                insertedItems++;
+            }
 
             InventoryManager.INSTANCE.openContainer(new ContainerPlayerHotbar(null, playerInventory));
             InventoryManager.INSTANCE.resetInventoryStatus();
 
-            Destroy(gameObject);
+            InventoryManager.INSTANCE.toggleIOHelpBar(false);
+
+            if (canAddItemToInvetory) Destroy(gameObject);
+
         }
+
+        if (io != this) canBeCollected = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void setCanBeCollected(bool canBeCollected)
     {
-        if (other.gameObject.tag == "Player" && item != null)
-        {
-            canBeCollected = true;
-        }
-        else
-        {
-            canBeCollected = false;
-        }
-
-        
+        this.canBeCollected = canBeCollected;
     }
+
+    public string getItemName()
+    {
+        return (this.item != null) ? this.item.name : "null";
+    }
+
+    public Item getItem()
+    {
+        return this.item;
+    }
+
+
+    IEnumerator UpdateParent()
+    {
+        while (true)
+        {
+            updateParentPosition();
+
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+
 }
