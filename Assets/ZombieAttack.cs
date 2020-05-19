@@ -18,6 +18,7 @@ public class ZombieAttack : MonoBehaviour
     {
         if (target == null) return; //if no target
         Debug.Log("banggggggg");
+        target.GetComponent<DisplayDamage>().ShowDamageImpact();
         target.TakeDamage(damage);
     }
 }
