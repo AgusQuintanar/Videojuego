@@ -69,7 +69,6 @@ public class ZombieAI : MonoBehaviour
     {
         isGettingShot = false;
         navMeshAgent.enabled = true;
-        print("pos chido");
 
     }
 

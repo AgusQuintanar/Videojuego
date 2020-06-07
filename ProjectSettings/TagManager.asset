@@ -8,6 +8,9 @@ TagManager:
   - Item
   - Stair
   - Interactive
+  - Wardrobe
+  - Cabinet
+  - Dresser
   layers:
   - Default
   - TransparentFX

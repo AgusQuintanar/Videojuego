@@ -10,6 +10,11 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] float health = 100f;
     [SerializeField] Text healthText;
 
+    private void Start()
+    {
+        StartCoroutine(Recover_Health());
+    }
+
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -23,4 +28,18 @@ public class PlayerHealth : MonoBehaviour
             //SceneManager.LoadScene(2);
         }
     }
+
+    IEnumerator Recover_Health()
+    {
+        while (true)
+        {
+            if (health < 100)
+            {
+                health++;
+                healthText.text = health.ToString();
+            }
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
 }

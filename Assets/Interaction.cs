@@ -9,7 +9,7 @@ public class Interaction : MonoBehaviour
 {
     GameObject doorInFront;
     bool stairInFront;
-    [SerializeField] Image door_tooltip;
+    [SerializeField] Image tooltip;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,29 +21,68 @@ public class Interaction : MonoBehaviour
     {
         ProcessDoor();
         ProcessStair();
+
+        if (InventoryManager.INSTANCE.hasInventoryCurrentlyOpen()) if (tooltip != null) tooltip.gameObject.SetActive(false);
     }
 
-    void OnTriggerEnter(Collider collision){
-        if(collision.gameObject.tag == "Door"){
-            doorInFront = collision.gameObject;
-            print("new door");
-            if (door_tooltip != null) door_tooltip.gameObject.SetActive(true);
+    void OnTriggerEnter(Collider c){
+        if(c.gameObject.tag == "Door")
+        {
+            doorInFront = c.gameObject;
+            if (tooltip != null)
+            {
+                tooltip.gameObject.SetActive(true);
+                tooltip.GetComponentInChildren<Text>().text = "Presione [X] para abrir/cerrar puerta";
+            }
         }
-        if(collision.gameObject.tag == "Stair"){
+        else if(c.gameObject.tag == "Stair")
+        {
             stairInFront = true;
             print("stair");
         }
+        else if (c.gameObject.tag == "Dresser")
+        {
+            if (tooltip != null)
+            {
+                tooltip.gameObject.SetActive(true);
+                tooltip.GetComponentInChildren<Text>().text = "Presione [C] para examinar el Tocador";
+            }
+
+        }
+        else if (c.gameObject.tag == "Wardrobe")
+        {
+            if (tooltip != null)
+            {
+                tooltip.gameObject.SetActive(true);
+                tooltip.GetComponentInChildren<Text>().text = "Presione [C] para examinar el Armario";
+            }
+
+        }
+        else if (c.gameObject.tag == "Cabinet")
+        {
+            if (tooltip != null)
+            {
+                tooltip.gameObject.SetActive(true);
+                tooltip.GetComponentInChildren<Text>().text = "Presione [C] para examinar el Gabinete";
+            }
+
+        }
     }
 
-    void OnTriggerExit(Collider collision){
-        if(collision.gameObject.tag == "Door"){
+    void OnTriggerExit(Collider c){
+        if(c.gameObject.tag == "Door")
+        {
             doorInFront = null;
-            print("deleted door");
-            if (door_tooltip != null) door_tooltip.gameObject.SetActive(false);
+            if (tooltip != null) tooltip.gameObject.SetActive(false);
         }
-        if (collision.gameObject.tag == "Stair"){
+        else if (c.gameObject.tag == "Stair")
+        {
             stairInFront = false;
             print("stair exit");
+        }
+        else if (c.gameObject.tag == "Dresser" || c.gameObject.tag == "Wardrobe" || c.gameObject.tag == "Cabinet")
+        {
+            if (tooltip != null) tooltip.gameObject.SetActive(false);
         }
     }
 

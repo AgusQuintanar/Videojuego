@@ -15,14 +15,12 @@ public class DisplayDamage : MonoBehaviour
 
     public void ShowDamageImpact()
     {
-        Debug.Log("hay holaaaaaaaaaaaaaaaaaaaaa 1");
         StartCoroutine(ShowSplatter());
        
     }
 
     IEnumerator ShowSplatter()
     {
-        Debug.Log("hay holaaaaaaaaaaaaaaaaaaaaa 1234");
         impactCanvas.enabled = true;
         yield return new WaitForSeconds(impactTime);
         impactCanvas.enabled = false;
