@@ -9,7 +9,7 @@ public class Interaction : MonoBehaviour
 {
     GameObject doorInFront;
     bool stairInFront;
-    public GameObject textBox;
+    [SerializeField] Image door_tooltip;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +27,7 @@ public class Interaction : MonoBehaviour
         if(collision.gameObject.tag == "Door"){
             doorInFront = collision.gameObject;
             print("new door");
-            textBox.GetComponent<Text>().text = "[X] para abrir.";
+            if (door_tooltip != null) door_tooltip.gameObject.SetActive(true);
         }
         if(collision.gameObject.tag == "Stair"){
             stairInFront = true;
@@ -39,9 +39,9 @@ public class Interaction : MonoBehaviour
         if(collision.gameObject.tag == "Door"){
             doorInFront = null;
             print("deleted door");
-            textBox.GetComponent<Text>().text = "";
+            if (door_tooltip != null) door_tooltip.gameObject.SetActive(false);
         }
-        if(collision.gameObject.tag == "Stair"){
+        if (collision.gameObject.tag == "Stair"){
             stairInFront = false;
             print("stair exit");
         }

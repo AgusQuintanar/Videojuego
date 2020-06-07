@@ -48,7 +48,7 @@ public class ZombieHealth : MonoBehaviour
     {
         Destroy(gameObject);
 
-        SceneManager.LoadScene(3); //TODO quitar
+        //SceneManager.LoadScene(3); //TODO quitar escena de victoria
 
     }
 }

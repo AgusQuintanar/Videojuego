@@ -33,6 +33,7 @@ public class ZombieAI : MonoBehaviour
         {
             enabled = false; //disables AI
             navMeshAgent.enabled = false; //disables nav mesh agent
+            gameObject.GetComponent<BoxCollider>().enabled = false;
         }
         else if (!isSpanning && !isGettingShot)
         {
@@ -41,14 +42,15 @@ public class ZombieAI : MonoBehaviour
 
             distanceToTarget = Vector3.Distance(target.position, transform.position);
 
-            if (distanceToTarget <= navMeshAgent.stoppingDistance + .2)
+            //Debug.Log("distance to target: " + distanceToTarget + ", otra cosa: " + navMeshAgent.stoppingDistance + .2);
+
+            if (distanceToTarget <= 2.5)
             {
                 AttackTarget();
             }
             else
             {
                 ChaseTarget();
-
             }
         }
         
