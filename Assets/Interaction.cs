@@ -67,6 +67,16 @@ public class Interaction : MonoBehaviour
             }
 
         }
+        else if (c.gameObject.tag == "Computer")
+        {
+            if (tooltip != null)
+            {
+                tooltip.gameObject.SetActive(true);
+                tooltip.GetComponentInChildren<Text>().text = "Presione [C] para usar la Computadora";
+            }
+
+        }
+
     }
 
     void OnTriggerExit(Collider c){
@@ -80,7 +90,7 @@ public class Interaction : MonoBehaviour
             stairInFront = false;
             print("stair exit");
         }
-        else if (c.gameObject.tag == "Dresser" || c.gameObject.tag == "Wardrobe" || c.gameObject.tag == "Cabinet")
+        else if (c.gameObject.tag == "Dresser" || c.gameObject.tag == "Wardrobe" || c.gameObject.tag == "Cabinet" || c.gameObject.tag == "Computer")
         {
             if (tooltip != null) tooltip.gameObject.SetActive(false);
         }

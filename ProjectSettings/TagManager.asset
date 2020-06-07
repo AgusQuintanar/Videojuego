@@ -11,6 +11,7 @@ TagManager:
   - Wardrobe
   - Cabinet
   - Dresser
+  - Computer
   layers:
   - Default
   - TransparentFX
