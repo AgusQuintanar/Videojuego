@@ -2,8 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace FPSControllerLPFP
-{
+
     /// Manages a first person character
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
@@ -203,6 +202,11 @@ namespace FPSControllerLPFP
             return angleDegrees;
         }
 
+        public void ChangeArms(GameObject newArms)
+        {
+            this.arms = newArms.transform;
+        }
+
         private void MoveCharacter()
         {
             var direction = new Vector3(input.Move, 0f, input.Strafe).normalized;
@@ -377,4 +381,3 @@ namespace FPSControllerLPFP
             }
         }
     }
-}
