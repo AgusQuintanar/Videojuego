@@ -69,7 +69,7 @@ public class Interaction : MonoBehaviour
         }
         else if (c.gameObject.tag == "Computer")
         {
-            if (tooltip != null)
+            if (tooltip != null);
             {
                 tooltip.gameObject.SetActive(true);
                 tooltip.GetComponentInChildren<Text>().text = "Presione [C] para usar la Computadora";
@@ -121,5 +121,9 @@ public class Interaction : MonoBehaviour
         
     }
 
+    public void clearTooltip()
+    {
+        if (tooltip != null) tooltip.gameObject.SetActive(false);
+    }
     
 }
