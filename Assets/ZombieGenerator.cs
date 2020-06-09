@@ -5,6 +5,7 @@ using UnityEngine;
 public class ZombieGenerator : MonoBehaviour
 {
     [SerializeField] GameObject zombie;
+    [SerializeField] GameObject miniBoss;
     [SerializeField] Transform[] spawns;
     [SerializeField] GameObject[] characters;
     [SerializeField] Transform target;
@@ -19,7 +20,7 @@ public class ZombieGenerator : MonoBehaviour
         generateZombie = GenerateZombie();
         StartCoroutine(generateZombie);
 
-        
+        StartCoroutine(GenerateMiniboss());
 
     }
 
@@ -27,7 +28,7 @@ public class ZombieGenerator : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(15f);
             randomSpawnIndex = Random.Range(0, spawns.Length); 
             GameObject newZombie = Instantiate(zombie, spawns[randomSpawnIndex].position , Quaternion.identity);
             randomCharacterIndex = Random.Range(0, 15);  //todo poner random  
@@ -35,6 +36,23 @@ public class ZombieGenerator : MonoBehaviour
             newZombie.GetComponent<ZombieAI>().target = target;
         }
         
+
+    }
+
+    IEnumerator GenerateMiniboss()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(100f);
+
+            randomSpawnIndex = Random.Range(0, spawns.Length);
+            GameObject newZombie = Instantiate(miniBoss, spawns[randomSpawnIndex].position, Quaternion.identity);
+            randomCharacterIndex = Random.Range(0, 15);  //todo poner random  
+            //characters[randomCharacterIndex].transform.parent = newZombie.transform;
+            newZombie.GetComponent<ZombieAI>().target = target;
+
+        }
+
 
     }
 }
