@@ -20,9 +20,6 @@ public class Computer : MonoBehaviour
     private void Update()
     {
 
-        if (!computerHasBeenUsed) Debug.Log("no se ha usado la compu"); else Debug.Log("ya se uso la compu");
-
-
         if (Input.GetKeyUp(KeyCode.C) && !InventoryManager.INSTANCE.hasInventoryCurrentlyOpen() && canUseComputer && !computerHasBeenUsed)
         {
 

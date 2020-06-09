@@ -23,10 +23,21 @@ public class PlayerHealth : MonoBehaviour
         {
             Debug.Log("You are dead bro");
 
-            //Destroy(gameObject);  //destroys de player
+            Destroy(gameObject);  //destroys de player
 
-            //SceneManager.LoadScene(2);
+            SceneManager.LoadScene(2);
         }
+    }
+
+    public float GetHealth()
+    {
+        return this.health;
+    }
+
+    public void SetHealth(float newHealth)
+    {
+        health = newHealth;
+        healthText.text = health.ToString();
     }
 
     IEnumerator Recover_Health()
