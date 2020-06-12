@@ -8,6 +8,11 @@ public class AutomaticGunScriptLPFP : MonoBehaviour {
 	//Animator component attached to weapon
 	Animator anim;
 
+	[Header("Raycast Configuration")]
+	[SerializeField] float range = 100f;
+	[SerializeField] float damage = 30f;
+
+
 	[Header("Gun Camera")]
 	//Main gun camera
 	public Camera gunCamera;
@@ -248,37 +253,7 @@ public class AutomaticGunScriptLPFP : MonoBehaviour {
 			randomMuzzleflashValue = Random.Range (minRandomValue, maxRandomValue);
 		}
 
-		//Timescale settings
-		//Change timescale to normal when 1 key is pressed
-		if (Input.GetKeyDown (KeyCode.Alpha1)) 
-		{
-			Time.timeScale = 1.0f;
-			timescaleText.text = "1.0";
-		}
-		//Change timesccale to 50% when 2 key is pressed
-		if (Input.GetKeyDown (KeyCode.Alpha2)) 
-		{
-			Time.timeScale = 0.5f;
-			timescaleText.text = "0.5";
-		}
-		//Change timescale to 25% when 3 key is pressed
-		if (Input.GetKeyDown (KeyCode.Alpha3)) 
-		{
-			Time.timeScale = 0.25f;
-			timescaleText.text = "0.25";
-		}
-		//Change timescale to 10% when 4 key is pressed
-		if (Input.GetKeyDown (KeyCode.Alpha4)) 
-		{
-			Time.timeScale = 0.1f;
-			timescaleText.text = "0.1";
-		}
-		//Pause game when 5 key is pressed
-		if (Input.GetKeyDown (KeyCode.Alpha5)) 
-		{
-			Time.timeScale = 0.0f;
-			timescaleText.text = "0.0";
-		}
+
 
 		//Set current ammo text from ammo int
 		currentAmmoText.text = currentAmmo.ToString ();
@@ -417,6 +392,9 @@ public class AutomaticGunScriptLPFP : MonoBehaviour {
 				Instantiate (Prefabs.casingPrefab, 
 					Spawnpoints.casingSpawnPoint.transform.position, 
 					Spawnpoints.casingSpawnPoint.transform.rotation);
+
+				//Making Raycast to Objectives
+				Shoot();
 			}
 		}
 
@@ -424,35 +402,6 @@ public class AutomaticGunScriptLPFP : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.T)) 
 		{
 			anim.SetTrigger ("Inspect");
-		}
-
-		//Toggle weapon holster when E key is pressed
-		if (Input.GetKeyDown (KeyCode.E) && !hasBeenHolstered) 
-		{
-			holstered = true;
-
-			mainAudioSource.clip = SoundClips.holsterSound;
-			mainAudioSource.Play();
-
-			hasBeenHolstered = true;
-		} 
-		else if (Input.GetKeyDown (KeyCode.E) && hasBeenHolstered) 
-		{
-			holstered = false;
-
-			mainAudioSource.clip = SoundClips.takeOutSound;
-			mainAudioSource.Play ();
-
-			hasBeenHolstered = false;
-		}
-		//Holster anim toggle
-		if (holstered == true) 
-		{
-			anim.SetBool ("Holster", true);
-		} 
-		else 
-		{
-			anim.SetBool ("Holster", false);
 		}
 
 		//Reload 
@@ -491,6 +440,23 @@ public class AutomaticGunScriptLPFP : MonoBehaviour {
 			anim.SetBool ("Run", false);
 		}
 	}
+
+
+    private void Shoot()
+    {
+		RaycastHit hit;
+		if (Physics.Raycast(gunCamera.transform.position, gunCamera.transform.forward, out hit, range))
+        {
+			Debug.Log("Hit"+hit.transform.name);
+			ZombieHealth target = hit.transform.GetComponent<ZombieHealth>();
+			if (target == null) return; //if thing hitted is not zombie
+			target.TakeDamage(damage);
+        }
+        else
+        {
+			return; //null exception
+        }
+    }
 
 	private IEnumerator GrenadeSpawnDelay () {
 		
